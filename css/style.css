@@ -31,8 +31,9 @@ body {
     text-align: center;
     position: sticky;
     top: 0;
-    z-index: 9999;
+    z-index: 9;
   }
+
   nav {
     margin: 0 auto;
     overflow: hidden;
@@ -44,34 +45,27 @@ body {
     width: 300px;
     height: 300px;
     cursor: pointer;
+    border-radius: 25px;
+    
 
 
 }
-.LCR:hover{
-
-    width: 400px;
-    height: 350px;
-    border: indigo 5px dashed;
-    border-radius: 22%;
+ul {
+    margin-left: 9%;
 }
+
   
   li {
     display: inline-block;
     list-style: none;
     margin: 20px 40px 20px 0px;
     font-size: 20px;
-    color: ghostwhite;
+    font-weight: bold;
+    color: rgb(230, 65, 36);
     cursor: pointer;
   }
-  li:hover {
-      transition: 1s;
-    display: inline-block;
-    list-style: none;
-    margin: 20px 40px 20px 0px;
-    font-size: 20px;
-    color: rgb(216, 56, 51);
+
     
-  }
   
   body footer {
     background: pink;
@@ -91,6 +85,8 @@ text-align: center;
 
   #p1{
   text-align: center;
+  margin-left: -12%;
+  font-size: larger;
   }
 
 #left1{

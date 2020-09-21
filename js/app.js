@@ -22,7 +22,8 @@ var rightAdRandom;
 function Bus (name){
   this.name = name;
   this.imgUrl = `img/${name}`;
-  this.clicks = 0;
+  this.votes = 0;
+  this.views = 0;
   this.viewResult = 0;
   busMallArr.push(this);
 }
@@ -32,12 +33,17 @@ function renderImages(leftAdRandom, middleAdRandom, rightAdRandom ){
 
   leftBusImage.setAttribute('src', leftAdRandom.imgUrl);
   leftBusImage.setAttribute('alt', leftAdRandom.name);
+  leftAdRandom.views++;
 
   middleBusImage.setAttribute('src', middleAdRandom.imgUrl);
   middleBusImage.setAttribute('alt', middleAdRandom.name);
+  middleAdRandom.views++;
 
   rightBusImage.setAttribute('src', rightAdRandom.imgUrl);
   rightBusImage.setAttribute('alt', rightAdRandom.name);
+  rightAdRandom.views++;
+
+
 }
 
 
@@ -70,17 +76,18 @@ function clickOnImg(e){
   }
 
   if (e.target.id === 'left_ad_img'){
-    leftAdRandom.clicks++;
+    leftAdRandom.votes++;
   }
   if (e.target.id === 'middle_ad_img'){
-    middleAdRandom.clicks++;
+    middleAdRandom.votes++;
   }
   if (e.target.id === 'right_ad_img'){
-    rightAdRandom.clicks++;
+    rightAdRandom.votes++;
   }
 
-
   if(totalClicks === 0){
+
+
     groupimages.removeEventListener('click', clickOnImg);
     lastResults();
     results();
@@ -97,8 +104,7 @@ function results(){
 
     var listedResults = document.createElement('li');
     finalResults.appendChild(listedResults);
-    listedResults.textContent = `Result: ${busMallArr[m].name} had ${busMallArr[m].clicks} clicks`;
-
+    listedResults.textContent = ` ${busMallArr[m].name} had ${busMallArr[m].votes} votes and was shown ${busMallArr[m].views} times`;
   }}
 
 
