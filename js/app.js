@@ -1,9 +1,11 @@
+/* eslint-disable no-undef */
 'use strict';
 
 var busMAllImages = ['bag.jpg', 'banana.jpg','bathroom.jpg','boots.jpg','breakfast.jpg', 'bubblegum.jpg', 'chair.jpg', 'cthulhu.jpg',
   'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg','shark.jpg','sweep.png', 'tauntaun.jpg',
   'unicorn.jpg', 'usb.gif', 'water-can.jpg','wine-glass.jpg'];
 
+//---------------------------------------------------------------
 var leftBusImage = document.getElementById('left_ad_img');
 var middleBusImage = document.getElementById('middle_ad_img');
 var rightBusImage = document.getElementById('right_ad_img');
@@ -14,9 +16,9 @@ var busMallArr = [];
 var totalClicks = 25;
 
 
-var leftAdRandom;
-var middleAdRandom;
-var rightAdRandom;
+var leftPic;
+var centerPic;
+var rightPic;
 
 
 function Bus (name){
@@ -24,50 +26,53 @@ function Bus (name){
   this.imgUrl = `img/${name}`;
   this.votes = 0;
   this.views = 0;
-  this.viewResult = 0;
   busMallArr.push(this);
 }
 
+//----------------------------------------------------------
 
-function renderImages(leftAdRandom, middleAdRandom, rightAdRandom ){
-
-  leftBusImage.setAttribute('src', leftAdRandom.imgUrl);
-  leftBusImage.setAttribute('alt', leftAdRandom.name);
-  leftAdRandom.views++;
-
-  middleBusImage.setAttribute('src', middleAdRandom.imgUrl);
-  middleBusImage.setAttribute('alt', middleAdRandom.name);
-  middleAdRandom.views++;
-
-  rightBusImage.setAttribute('src', rightAdRandom.imgUrl);
-  rightBusImage.setAttribute('alt', rightAdRandom.name);
-  rightAdRandom.views++;
-
-
-}
-
+var noRepeatArray = [];
 
 function getRandomImg(){
-  leftAdRandom = busMallArr[randomNumber(0, busMallArr.length-1)];
-  middleAdRandom = busMallArr[randomNumber(0, busMallArr.length-1)];
-  rightAdRandom = busMallArr[randomNumber(0, busMallArr.length-1)];
 
-  renderImages(leftAdRandom, middleAdRandom, rightAdRandom );
+  leftPic = busMallArr[randomNumber(0, busMallArr.length-1)];
+  centerPic = busMallArr[randomNumber(0, busMallArr.length-1)];
+  rightPic = busMallArr[randomNumber(0, busMallArr.length-1)];
 
-  while(leftAdRandom === rightAdRandom || leftAdRandom === middleAdRandom || rightAdRandom === middleAdRandom){
-    leftAdRandom = busMallArr[randomNumber(0, busMallArr.length-1)];
-    middleAdRandom = busMallArr[randomNumber(0, busMallArr.length-1)];
-    rightAdRandom = busMallArr[randomNumber(0, busMallArr.length-1)];
+
+  while(leftPic.name === rightPic.name || leftPic.name === centerPic.name || rightPic.name === centerPic.name || noRepeatArray.includes(leftPic) || noRepeatArray.includes(centerPic) || noRepeatArray.includes(rightPic)){
+    leftPic = busMallArr[randomNumber(0, busMallArr.length-1)];
+    centerPic = busMallArr[randomNumber(0, busMallArr.length-1)];
+    rightPic = busMallArr[randomNumber(0, busMallArr.length-1)];
   }
 
-  renderImages(leftAdRandom,middleAdRandom, rightAdRandom );
+  noRepeatArray = [];
+  noRepeatArray.push(leftPic);
+  noRepeatArray.push(rightPic);
+  noRepeatArray.push(centerPic);
+
+
+
+  leftBusImage.setAttribute('src', leftPic.imgUrl);
+  leftBusImage.setAttribute('alt', leftPic.name);
+  leftPic.views++;
+
+  middleBusImage.setAttribute('src', centerPic.imgUrl);
+  middleBusImage.setAttribute('alt', centerPic.name);
+  centerPic.views++;
+
+  rightBusImage.setAttribute('src', rightPic.imgUrl);
+  rightBusImage.setAttribute('alt', rightPic.name);
+  rightPic.views++;
 }
+
 
 for (var i = 0; i< busMAllImages.length; i++){
   new Bus (busMAllImages[i]);
 }
 getRandomImg();
 
+//---------------------------------------------------
 
 function clickOnImg(e){
   if (e.target.id === 'left_ad_img' || e.target.id === 'middle_ad_img' || e.target.id === 'right_ad_img'){
@@ -75,20 +80,18 @@ function clickOnImg(e){
     totalClicks--;
   }
 
-  if (e.target.id === 'left_ad_img'){
-    leftAdRandom.votes++;
-  }
-  if (e.target.id === 'middle_ad_img'){
-    middleAdRandom.votes++;
-  }
-  if (e.target.id === 'right_ad_img'){
-    rightAdRandom.votes++;
-  }
+  if (e.target.id === 'left_ad_img') leftPic.votes++;
+  if (e.target.id === 'middle_ad_img') centerPic.votes++;
+  if (e.target.id === 'right_ad_img') rightPic.votes++;
+
 
   if(totalClicks === 0){
 
 
-    groupimages.removeEventListener('click', clickOnImg);
+    leftBusImage.remove();
+    middleBusImage.remove();
+    rightBusImage.remove();
+    // groupimages.removeEventListener('click', clickOnImg);
     lastResults();
     results();
   }
@@ -105,27 +108,57 @@ function results(){
     var listedResults = document.createElement('li');
     finalResults.appendChild(listedResults);
     listedResults.textContent = ` ${busMallArr[m].name} had ${busMallArr[m].votes} votes and was shown ${busMallArr[m].views} times`;
+    console.log(listedResults);
+
   }}
 
 
-function lastResults(){
-  var adsNameArr = [];
-  var adsClicks = [];
-  for (var j = 0; j < busMallArr.length; j++){
-    var ads = busMallArr[j].name;
-    adsNameArr.push(ads);
-    var adsViews = busMallArr[j].viewResult;
-    adsClicks.push(adsViews);
-  }}
-
-
-
-
-
-
-
-
+// ............................................................
 
 function randomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+// ............................................................
+
+
+
+function lastResults(){
+  var viewsArr = [];
+
+  for (var j = 0; j < busMallArr.length; j++){
+
+    var viewResults = busMallArr[j].views;
+    viewsArr.push(viewResults);
+  }
+
+  //--------------------------------------------------------------
+
+  var ctx = document.getElementById('myChart').getContext('2d');
+  // eslint-disable-next-line no-undef
+  // eslint-disable-next-line no-unused-vars
+  var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: busMAllImages,
+      datasets: [{
+        label: '# of Votes',
+        data: viewsArr,
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        borderColor: 'rgba(255, 99, 132, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
+
+
 }

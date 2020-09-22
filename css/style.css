@@ -1,6 +1,14 @@
 body {
     background: radial-gradient(#b8a2d4, rgb(245, 174, 174)) ;
+    /* background-image: url(https://i.pinimg.com/originals/f1/47/2f/f1472f334b2df7c0002176ddf26ca638.jpg); */
+    background-size: cover;
+    background-repeat: no-repeat;
 
+  }
+
+
+  .lgnd{
+    text-align: center;
   }
 
   a{
@@ -19,6 +27,7 @@ body {
     font-size: 24px;
     font-weight: bold;
     margin: 10px 0;
+    text-align: center;
   }
   h2{
     font-size: 18px;
@@ -46,23 +55,30 @@ body {
     height: 300px;
     cursor: pointer;
     border-radius: 25px;
+    border: #b8a2d4 dashed 3px;
     
 
 
 }
 ul {
-    margin-left: 9%;
+    margin-left: 3%;
+    border: black 2px dotted;
+    border-radius: 8px;
 }
 
   
   li {
-    display: inline-block;
+  
     list-style: none;
     margin: 20px 40px 20px 0px;
     font-size: 20px;
     font-weight: bold;
-    color: rgb(230, 65, 36);
+    color: rgb(255, 255, 255);
     cursor: pointer;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    /* border: floralwhite 2px solid; */
+
+
   }
 
     
@@ -84,8 +100,7 @@ text-align: center;
   }
 
   #p1{
-  text-align: center;
-  margin-left: -12%;
+
   font-size: larger;
   }
 
@@ -108,4 +123,22 @@ text-align: center;
 fieldset{
 
     border: deeppink 2px dashed;
+    border: dimgray 1px;
+    z-index: 5;
+}
+
+
+
+.chart-container {
+  position: relative;
+  margin: auto;
+  height: 80vh;
+  width: 111vh;
+  
+}
+
+#myChart{
+  position: absolute;
+  top: -141%;
+  left: 27%;
 }
