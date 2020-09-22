@@ -5,7 +5,9 @@ var busMAllImages = ['bag.jpg', 'banana.jpg','bathroom.jpg','boots.jpg','breakfa
   'dog-duck.jpg', 'dragon.jpg', 'pen.jpg', 'pet-sweep.jpg', 'scissors.jpg','shark.jpg','sweep.png', 'tauntaun.jpg',
   'unicorn.jpg', 'usb.gif', 'water-can.jpg','wine-glass.jpg'];
 
+
 //---------------------------------------------------------------
+
 var leftBusImage = document.getElementById('left_ad_img');
 var middleBusImage = document.getElementById('middle_ad_img');
 var rightBusImage = document.getElementById('right_ad_img');
@@ -22,7 +24,7 @@ var rightPic;
 
 
 function Bus (name){
-  this.name = name;
+  this.name = name.split('.')[0];
   this.imgUrl = `img/${name}`;
   this.votes = 0;
   this.views = 0;
@@ -31,6 +33,26 @@ function Bus (name){
 
 //----------------------------------------------------------
 
+function updateVotes(){
+  var updateFresh = JSON.stringify(busMallArr);
+  localStorage.setItem('votes', updateFresh);
+}
+
+
+function getVotes() {
+  var getFresh = localStorage.getItem('votes');
+
+  if(getFresh) {
+    busMallArr = JSON.parse(getFresh);
+    results();
+    lastResults();
+  }
+}
+
+//--------------------------------------------
+
+
+
 var noRepeatArray = [];
 
 function getRandomImg(){
@@ -38,7 +60,6 @@ function getRandomImg(){
   leftPic = busMallArr[randomNumber(0, busMallArr.length-1)];
   centerPic = busMallArr[randomNumber(0, busMallArr.length-1)];
   rightPic = busMallArr[randomNumber(0, busMallArr.length-1)];
-
 
   while(leftPic.name === rightPic.name || leftPic.name === centerPic.name || rightPic.name === centerPic.name || noRepeatArray.includes(leftPic) || noRepeatArray.includes(centerPic) || noRepeatArray.includes(rightPic)){
     leftPic = busMallArr[randomNumber(0, busMallArr.length-1)];
@@ -86,19 +107,18 @@ function clickOnImg(e){
 
 
   if(totalClicks === 0){
-
-
-    leftBusImage.remove();
-    middleBusImage.remove();
-    rightBusImage.remove();
-    // groupimages.removeEventListener('click', clickOnImg);
+    // leftBusImage.remove();
+    // middleBusImage.remove();
+    // rightBusImage.remove();
+    groupimages.removeEventListener('click', clickOnImg);
+    updateVotes();
     lastResults();
     results();
+
   }
 }
 
 groupimages.addEventListener('click' , clickOnImg);
-
 
 
 function results(){
@@ -124,9 +144,12 @@ function randomNumber(min, max) {
 
 
 function lastResults(){
+  var namesArr = [];
   var viewsArr = [];
 
   for (var j = 0; j < busMallArr.length; j++){
+    var namesResults = busMallArr[j].name;
+    namesArr.push(namesResults);
 
     var viewResults = busMallArr[j].views;
     viewsArr.push(viewResults);
@@ -140,12 +163,12 @@ function lastResults(){
   var myChart = new Chart(ctx, {
     type: 'bar',
     data: {
-      labels: busMAllImages,
+      labels: namesArr,
       datasets: [{
         label: '# of Votes',
         data: viewsArr,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 102, 8.2)',
+        borderColor: 'white',
         borderWidth: 1
       }]
     },
@@ -162,3 +185,4 @@ function lastResults(){
 
 
 }
+getVotes();
